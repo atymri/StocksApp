@@ -4,6 +4,16 @@ This repository contains the source code for **StocksApp**, a web application de
 
 -----
 
+## Screenshots
+
+Here are some screenshots of the application interface:
+
+![Screenshot 1](screenshots/Screenshot%201.png)
+![Screenshot 2](screenshots/Screenshot%202.png)
+![Screenshot 3](screenshots/Screenshot%203.png)
+
+-----
+
 ## Core Features
 
 The primary objective of the StocksApp application is to provide users with essential stock market information.
