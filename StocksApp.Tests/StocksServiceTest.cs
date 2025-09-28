@@ -7,16 +7,21 @@ using StocksApp.ServiceContracts;
 using StocksApp.Services;
 using System.Xml.Linq;
 using StocksApp.Entities;
+using Moq;
+using StocksApp.RepositoryContracts;
 
 namespace Tests
 {
     public class StocksServiceTest
     {
         private readonly IStocksService _stocksService;
-
+        private readonly IStocksRepository _stocksRepository;
+        private readonly Mock<IStocksRepository> _stocksRepositoryMock;
         public StocksServiceTest()
         {
-            _stocksService = new StocksService(new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>().Options));
+            _stocksRepositoryMock = new Mock<IStocksRepository>();
+            _stocksRepository = _stocksRepositoryMock.Object;
+            _stocksService = new StocksService(_stocksRepository);
         }
 
 

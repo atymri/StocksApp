@@ -24,26 +24,29 @@ namespace StocksApp.Web.Controllers
         [Route("[action]/{stock?}")]
         public async Task<IActionResult> Explore(string? stock, bool showAll = false)
         {
-            var stockDict = await _finnhubService.GetStocks();
+            List<Dictionary<string, string>>? stocksDictionary = await _finnhubService.GetStocks();
+
             List<Stock> stocks = new List<Stock>();
 
-            if(stockDict is not null)
+            if (stocksDictionary is not null)
             {
-                if(!showAll && _tradingOptions.Top25PopularStocks != null)
+                if (!showAll && _tradingOptions.Top25PopularStocks != null)
                 {
-                    string[]? top25 = _tradingOptions.Top25PopularStocks.Split(',');
-                    if(top25 is not null)
+                    string[]? Top25PopularStocksList = _tradingOptions.Top25PopularStocks.Split(",");
+                    if (Top25PopularStocksList is not null)
                     {
-                        stockDict = stockDict.Where(temp => top25.Contains(Convert.ToString(temp["symbol"])))
-                            .ToList();
+                        stocksDictionary = stocksDictionary
+                         .Where(temp => Top25PopularStocksList.Contains(Convert.ToString(temp["symbol"])))
+                         .ToList();
                     }
                 }
 
-                stocks = stockDict
-                   .Select(temp => new Stock() { StockName = Convert.ToString(temp["description"]), StockSymbol = Convert.ToString(temp["symbol"]) })
-                   .ToList();
+                stocks = stocksDictionary
+                 .Select(temp => new Stock() { StockName = Convert.ToString(temp["description"]), StockSymbol = Convert.ToString(temp["symbol"]) })
+                .ToList();
             }
-            ViewBag.Stock = stock;
+
+            ViewBag.stock = stock;
             return View(stocks);
         }
     }

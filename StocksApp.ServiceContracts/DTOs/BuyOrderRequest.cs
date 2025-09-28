@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StocksApp.ServiceContracts.DTOs
 {
-    public class BuyOrderRequest : IValidatableObject
+    public class BuyOrderRequest : IValidatableObject, IOrderRequest
     {
         [Required(ErrorMessage = "Stock symbol is required.")]
         public string StockSymbol { get; set; }

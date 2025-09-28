@@ -5,6 +5,7 @@ using ServiceContracts;
 using ServiceContracts.DTO;
 using StocksApp.ServiceContracts;
 using StocksApp.ServiceContracts.DTOs;
+using StocksApp.Web.Filters.ActionFilters;
 using StocksApp.Web.Models;
 using System.Globalization;
 
@@ -56,54 +57,18 @@ namespace StocksApp.Web.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [CreateOrderActionFactorory]
         public IActionResult SellOrder(SellOrderRequest request)
         {
-            request.DateAndTimeOfOrder = DateTime.UtcNow;
-            ModelState.Clear();
-
-            TryValidateModel(request);
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Errors = ModelState.Values.SelectMany(m => m.Errors).Select(e => e.ErrorMessage);
-                var stockTrade = new StockTrade()
-                {
-                    StockName = request.StockName,
-                    StockSymbol = request.StockSymbol,
-                    Price = request.Price,
-                    Quantity = request.Quantity
-                };
-                return View("Index", stockTrade);
-            }
-
             var response = _stockService.CreateSellOrder(request);
             return RedirectToAction(nameof(Orders));
-
         }
 
         [HttpPost]
         [Route("[action]")]
+        [CreateOrderActionFactorory]
         public IActionResult BuyOrder(BuyOrderRequest request)
         {
-            request.DateAndTimeOfOrder = DateTime.UtcNow;
-            Console.WriteLine(DateTime.UtcNow);
-            ModelState.Clear();
-
-            TryValidateModel(request);
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Errors = ModelState.Values.SelectMany(m => m.Errors).Select(e => e.ErrorMessage);
-                var stockTrade = new StockTrade()
-                {
-                    StockName = request.StockName,
-                    StockSymbol = request.StockSymbol,
-                    Price = request.Price,
-                    Quantity = request.Quantity
-                };
-                return View("Index", stockTrade);
-            }
-
             var response = _stockService.CreateBuyOrder(request);
             return RedirectToAction(nameof(Orders));
         }
