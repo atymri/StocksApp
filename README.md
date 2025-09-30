@@ -71,6 +71,19 @@ To clone this project and run it locally, you will need the appropriate .NET SDK
 
 -----
 
+## TODO
+
+Planned enhancements and future improvements for **StocksApp**:
+
+- [X] Add a chart in trade page and company logos on explore.
+- [ ] SOLID Principles.
+- [ ] Add user authentication.
+- [ ] Implement search and filtering for stocks.
+- [ ] Integrate push notifications or email alerts for price changes.
+- [ ] Enhance error handling and logging mechanisms.
+
+-----
+
 ## License
 
 This project is released under the **Apache-2.0 License**. See the `LICENSE.txt` file for full details.
