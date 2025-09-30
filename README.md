@@ -11,6 +11,7 @@ Here are some screenshots of the application interface:
 ![Screenshot 1](screenshots/Screenshot%201.png)
 ![Screenshot 2](screenshots/Screenshot%202.png)
 ![Screenshot 3](screenshots/Screenshot%203.png)
+![Screenshot 3](screenshots/Screenshot%204.png)
 
 -----
 
