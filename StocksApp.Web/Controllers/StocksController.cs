@@ -20,16 +20,18 @@ namespace StocksApp.Web.Controllers
             _tradingOptions = tradingOptions.Value;
         }
 
-        [Route("[action]")]
         [Route("[action]/{stock?}")]
+        [Route("~/[action]/{stock?}")]
         public async Task<IActionResult> Explore(string? stock, bool showAll = false)
         {
+            //get company profile from API server
             List<Dictionary<string, string>>? stocksDictionary = await _finnhubService.GetStocks();
 
             List<Stock> stocks = new List<Stock>();
 
             if (stocksDictionary is not null)
             {
+                //filter stocks
                 if (!showAll && _tradingOptions.Top25PopularStocks != null)
                 {
                     string[]? Top25PopularStocksList = _tradingOptions.Top25PopularStocks.Split(",");

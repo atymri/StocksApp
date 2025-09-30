@@ -70,7 +70,7 @@
     <div class="flex-1" id="stock-details">
         @if (ViewBag.stock != null)
         {
-            <vc:selected-stock stock-symbol="@ViewBag.stock"></vc:selected-stock>
+            @await Component.InvokeAsync("SelectedStock", new { stock = ViewBag.Stock })
         }
     </div>
 </div>

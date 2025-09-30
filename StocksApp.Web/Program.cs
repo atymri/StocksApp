@@ -9,6 +9,7 @@ using StocksApp.Services;
 using StocksApp.Web;
 using Serilog;
 using Serilog.Events;
+using StocksApp.Web.Middlewares;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,7 +47,14 @@ builder.Services.AddHttpClient();
 var app = builder.Build();
 
 if (builder.Environment.IsDevelopment())
+{
     app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandlingMiddleware();
+    app.UseExceptionHandler("/error");
+}
 
 app.UseSerilogRequestLogging();
 app.UseStaticFiles();

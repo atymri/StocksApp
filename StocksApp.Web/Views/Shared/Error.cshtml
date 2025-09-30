@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Error";
+}
+<div class="page-content full-size-height flex flex-direction-vertical center-box text-center">
+    <div class="mt" style="margin-top: 60px;">
+        <div style="font-size: 6em; color: #cb511e; margin-bottom: 10px;">⚠️</div>
+        <h1 class="text-red" style="font-size: 2.5em; margin-bottom: 15px;">Oops! Something Went Wrong</h1>
+    </div>
+
+    <div class="box white-back" style="max-width: 600px; margin: 20px auto; box-shadow: 0px 0px 8px 2px #e4e4e4;">
+        <div style="font-size: 1.1em; color: #333; margin-bottom: 15px;">
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <div class="text-red mb" style="font-weight: bold;">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+            else
+            {
+                <div class="text-grey">
+                    We encountered an unexpected error while processing your request.
+                </div>
+            }
+        </div>
+
+        <div class="text-grey" style="font-size: 0.95em; line-height: 1.6;">
+            Don't worry, this happens sometimes. Here are a few things you can try:
+        </div>
+
+        <div class="list-container" style="margin-top: 15px;">
+            <ul class="list" style="text-align: left;">
+                <li>Refresh the page and try again</li>
+                <li>Go back to the home page and start over</li>
+                <li>Check your internet connection</li>
+                <li>Clear your browser cache and cookies</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="button-panel" style="margin-top: 10px;">
+        <a class="link-hover mr" href="javascript:history.back()">Go Back</a>
+        <a class="link-hover mr" href="/">Home Page</a>
+        <a class="link-hover" href="javascript:location.reload()">Refresh Page</a>
+    </div>
+
+    <div class="mt" style="margin-top: 40px;">
+        <p class="text-grey" style="font-size: 0.85em;">
+            If the problem persists, please contact support.
+        </p>
+    </div>
+</div>
