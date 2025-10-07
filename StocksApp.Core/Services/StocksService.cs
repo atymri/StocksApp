@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StocksApp.Entities;
+﻿using StocksApp.Entities;
 using StocksApp.RepositoryContracts;
 using StocksApp.ServiceContracts;
 using StocksApp.ServiceContracts.DTOs;
