@@ -77,7 +77,7 @@ Planned enhancements and future improvements for **StocksApp**:
 
 - [X] Add a chart in trade page and company logos on explore.
 - [X] SOLID Principles.
-- [ ] Add user authentication.
+- [X] Add user authentication.
 - [ ] Implement search and filtering for stocks.
 - [ ] Integrate push notifications or email alerts for price changes.
 - [X] Enhance error handling and logging mechanisms.
