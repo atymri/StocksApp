@@ -8,6 +8,9 @@ using StocksApp.Repositories;
 using StocksApp.RepositoryContracts;
 using StocksApp.ServiceContracts;
 using StocksApp.Services;
+using StocksApp.Core.Domain.IdentityEntities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace StocksApp.Web.StartupExtensions
 {
@@ -27,6 +30,12 @@ namespace StocksApp.Web.StartupExtensions
             {
                 options.UseSqlServer(connectionString);
             });
+
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders()
+                .AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, Guid>>()
+                .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, Guid>>();
 
             Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
 
