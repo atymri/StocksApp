@@ -1,89 +1,57 @@
 # StocksApp
 
-This repository contains the source code for **StocksApp**, a web application designed to display real-time stock price information. The application focuses on providing a clear and functional interface for tracking live market data.
+A web application for tracking stock prices and managing a portfolio.
 
------
+## Architecture
 
-## Screenshots
+The application follows a layered architecture, which separates concerns and improves maintainability.
 
-Here are some screenshots of the application interface:
+- **StocksApp.Core**: Contains the core business logic, domain models, and service interfaces.
+- **StocksApp.Infrastructure**: Implements the data access layer using Entity Framework Core and repositories.
+- **StocksApp.Web**: The user interface of the application, built with ASP.NET Core MVC.
+- **StocksApp.Tests**: Contains unit and integration tests for the application.
 
-![Screenshot 1](screenshots/Screenshot%201.png)
-![Screenshot 2](screenshots/Screenshot%202.png)
-![Screenshot 3](screenshots/Screenshot%203.png)
-![Screenshot 3](screenshots/Screenshot%204.png)
-
------
-
-## Core Features
-
-The primary objective of the StocksApp application is to provide users with essential stock market information.
-
-  * **Live Stock Price Display:** Shows current market prices for selected stocks.
-  * **Data Updates:** Fetches and updates stock data in real-time or near real-time.
-  * **Modular Architecture:** Designed with clear separation of concerns (Entities, Services, Repositories).
-
------
-
-## Technologies Used
-
-The application is primarily built as a web solution using Microsoft technologies and standard web languages.
-
-  * **Backend:** C\# (.NET Framework or .NET Core)
-  * **Frontend:** HTML, CSS, and JavaScript
-  * **Project Structure:** Solution file (`.sln`) indicates a standard Visual Studio/C\# project setup.
-
------
-
-## Setup and Running
-
-To clone this project and run it locally, you will need the appropriate .NET SDK installed on your machine.
+## Getting Started
 
 ### Prerequisites
 
-  * **.NET SDK:** Ensure you have the necessary .NET SDK (likely .NET Core or a recent .NET version) for building and running C\# projects.
-  * **Git:** Required for cloning the repository.
+- .NET 8 SDK
+- SQL Server
 
 ### Installation
 
-1.  **Clone the Repository**
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/StocksApp.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd StocksApp
+   ```
+3. Restore the NuGet packages:
+   ```bash
+   dotnet restore
+   ```
+4. Update the database with the latest migrations:
+   ```bash
+   dotnet ef database update --project StocksApp.Infrastructure
+   ```
 
-    ```bash
-    git clone https://github.com/atymri/StocksApp.git
-    cd StocksApp
-    ```
+## Running the Application
 
-2.  **Restore Dependencies**
-    Open the solution file (`StocksApp.sln`) in a compatible IDE like Visual Studio, or use the command line:
+To run the application, execute the following command from the root directory:
 
-    ```bash
-    dotnet restore
-    ```
+```bash
+dotnet run --project StocksApp.Web
+```
 
-3.  **Run the Application**
-    Navigate to the main web project directory (e.g., `StocksApp.Web`) and execute the run command:
+The application will be available at `http://localhost:5000`.
 
-    ```bash
-    dotnet run --project StocksApp.Web
-    ```
+## Technologies Used
 
-    The application will typically launch on a local port (e.g., `http://localhost:5000`) displayed in the console output.
-
------
-
-## TODO
-
-Planned enhancements and future improvements for **StocksApp**:
-
-- [X] Add a chart in trade page and company logos on explore.
-- [X] SOLID Principles.
-- [X] Add user authentication.
-- [ ] Implement search and filtering for stocks.
-- [ ] Integrate push notifications or email alerts for price changes.
-- [X] Enhance error handling and logging mechanisms.
-
------
-
-## License
-
-This project is released under the **Apache-2.0 License**. See the `LICENSE.txt` file for full details.
+- ASP.NET Core
+- Entity Framework Core
+- Serilog
+- xUnit
+- Moq
+- Fluent Assertions
