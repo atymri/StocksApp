@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using StocksApp.Core.Domain.IdentityEntities;
@@ -24,7 +25,7 @@ namespace StocksApp.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterRequest request)
+        public async Task<IActionResult> Register(ServiceContracts.DTOs.RegisterRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -55,6 +56,32 @@ namespace StocksApp.Web.Controllers
 
             // Sign in
             await _signInManager.SignInAsync(user, request.RememberMe);
+            return RedirectToAction(nameof(TradeController.Index), "Trade");
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // just creates an authorization cookie.
+        public async Task<IActionResult> Login(ServiceContracts.DTOs.LoginRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage).ToList();
+                return View(request);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password,
+                request.RememberMe, true);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("Login", "Invalid Email or Password.");
+                return View(request);
+            }
             return RedirectToAction(nameof(TradeController.Index), "Trade");
         }
 

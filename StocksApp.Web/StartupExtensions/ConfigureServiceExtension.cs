@@ -31,7 +31,16 @@ namespace StocksApp.Web.StartupExtensions
                 options.UseSqlServer(connectionString);
             });
 
-            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+            {
+                options.Password.RequiredLength = 1;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredUniqueChars = 5;
+                options.Password.RequireDigit = true;
+                options.Password.RequireNonAlphanumeric = true;
+
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
                 .AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, Guid>>()

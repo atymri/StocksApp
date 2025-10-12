@@ -28,6 +28,7 @@
 
                         @if(!User.Identity.IsAuthenticated){
                             <a asp-controller="Account" asp-action="Register" class="link-hover">Register</a>
+                            <a asp-controller="Account" asp-action="Login" class="link-hover">Login</a>
                         }else{
                             @User.Identity?.Name
                             <a asp-controller="Account" asp-action="SignOut" class="link-hover">Signout</a>
