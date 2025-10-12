@@ -2,6 +2,12 @@
 
 A web application for tracking stock prices and managing a portfolio.
 
+## Screenshot
+![Screenshot1](https://github.com/atymri/StocksApp/blob/master/screenshots/Screenshot%201.png)
+![Screenshot2](https://github.com/atymri/StocksApp/blob/master/screenshots/Screenshot%202.png)
+![Screenshot3](https://github.com/atymri/StocksApp/blob/master/screenshots/Screenshot%203.png)
+![Screenshot3](https://github.com/atymri/StocksApp/blob/master/screenshots/Screenshot%204.png)
+
 ## Architecture
 
 The application follows a layered architecture, which separates concerns and improves maintainability.
