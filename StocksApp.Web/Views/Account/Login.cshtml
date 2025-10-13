@@ -15,7 +15,7 @@
             <div class="box white-back">
                 <h2 class="text-blue border-bottom pb">Registration Form</h2>
                 <a asp-controller="Account" asp-action="Register">dont have an account? register</a>
-                <form asp-controller="Account" asp-action="Login" method="post" class="flex flex-direction-vertical">
+                <form asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post" class="flex flex-direction-vertical">
 
                     <div class="form-field flex">
                         <div class="form-label">

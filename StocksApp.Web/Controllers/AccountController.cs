@@ -1,21 +1,24 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using StocksApp.Core.Domain.IdentityEntities;
-using StocksApp.ServiceContracts.DTOs;
 
 namespace StocksApp.Web.Controllers
 {
     [Route("[controller]/[action]")]
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly ILogger<AccountController> _logger;
+        public AccountController(UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -27,6 +30,7 @@ namespace StocksApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(ServiceContracts.DTOs.RegisterRequest request)
         {
+            _logger.LogInformation("{ClassName}.{MethodName}", nameof(AccountController), nameof(Register));
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors)
@@ -55,6 +59,7 @@ namespace StocksApp.Web.Controllers
             }
 
             // Sign in
+            _logger.LogInformation($"Successfully Registred {request.Email}");
             await _signInManager.SignInAsync(user, request.RememberMe);
             return RedirectToAction(nameof(TradeController.Index), "Trade");
         }
@@ -66,8 +71,9 @@ namespace StocksApp.Web.Controllers
         }
 
         // just creates an authorization cookie.
-        public async Task<IActionResult> Login(ServiceContracts.DTOs.LoginRequest request)
+        public async Task<IActionResult> Login(ServiceContracts.DTOs.LoginRequest request, string? returnUrl)
         {
+            _logger.LogInformation("{ClassName}.{MethodName}", nameof(AccountController), nameof(Login));
             if (!ModelState.IsValid)
             {
                 ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors)
@@ -77,11 +83,22 @@ namespace StocksApp.Web.Controllers
 
             var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password,
                 request.RememberMe, true);
+            
             if (!result.Succeeded)
             {
+                if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError("Login", "Your account is locked. Please try again later.");
+                }
+
                 ModelState.AddModelError("Login", "Invalid Email or Password.");
                 return View(request);
             }
+            _logger.LogInformation($"Successfully logged in {request.Email}");
+
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return LocalRedirect(returnUrl);
+
             return RedirectToAction(nameof(TradeController.Index), "Trade");
         }
 

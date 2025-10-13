@@ -1,14 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using ServiceContracts;
-using Services;
-using StocksApp.Entities;
-using StocksApp.Repositories;
-using StocksApp.RepositoryContracts;
-using StocksApp.ServiceContracts;
-using StocksApp.Services;
-using StocksApp.Web;
 using Serilog;
-using Serilog.Events;
 using StocksApp.Web.Middlewares;
 using StocksApp.Web.StartupExtensions;
 
@@ -31,8 +21,9 @@ else
 
 app.UseSerilogRequestLogging();
 app.UseStaticFiles();
-app.UseAuthentication();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 Log.Information("Hello, World!");
