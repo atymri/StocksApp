@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StocksApp.Core.Domain.IdentityEntities;
@@ -101,11 +102,25 @@ namespace StocksApp.Web.Controllers
 
             return RedirectToAction(nameof(TradeController.Index), "Trade");
         }
-
         public async Task<IActionResult> Signout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(TradeController.Index), "Trade");
+        }
+        public async Task<IActionResult> IsEmailInUseForRegister(string email)
+        {
+            var result = await _userManager.FindByEmailAsync(email);
+            return Json(result == null);
+        }
+        public async Task<IActionResult> IsEmailInUseForLogin(string email)
+        {
+            var result = await _userManager.FindByEmailAsync(email);
+            return Json(result != null);
+        }
+        public IActionResult CheckIfPhoneNumberExists(string phone)
+        {
+            var result = _userManager.Users.Any(u => u.PhoneNumber == phone);
+            return  Json(!result);
         }
     }
 }
