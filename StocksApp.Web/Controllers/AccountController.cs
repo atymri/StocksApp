@@ -1,13 +1,12 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StocksApp.Core.Domain.IdentityEntities;
+using StocksApp.Web.Filters.ActionFilters;
 
 namespace StocksApp.Web.Controllers
 {
     [Route("[controller]/[action]")]
-    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -23,12 +22,14 @@ namespace StocksApp.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "NotAuthenticated")]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Policy = "NotAuthenticated")]
         public async Task<IActionResult> Register(ServiceContracts.DTOs.RegisterRequest request)
         {
             _logger.LogInformation("{ClassName}.{MethodName}", nameof(AccountController), nameof(Register));
@@ -66,12 +67,14 @@ namespace StocksApp.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "NotAuthenticated")]
         public IActionResult Login()
         {
             return View();
         }
 
-        // just creates an authorization cookie.
+        [HttpPost]
+        [Authorize(Policy = "NotAuthenticated")]
         public async Task<IActionResult> Login(ServiceContracts.DTOs.LoginRequest request, string? returnUrl)
         {
             _logger.LogInformation("{ClassName}.{MethodName}", nameof(AccountController), nameof(Login));
@@ -102,21 +105,30 @@ namespace StocksApp.Web.Controllers
 
             return RedirectToAction(nameof(TradeController.Index), "Trade");
         }
+
+        [Authorize]
         public async Task<IActionResult> Signout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(TradeController.Index), "Trade");
         }
+
+        [AllowAnonymous]
+        [OnlyAjaxActionFilter]
         public async Task<IActionResult> IsEmailInUseForRegister(string email)
         {
             var result = await _userManager.FindByEmailAsync(email);
             return Json(result == null);
         }
+        [AllowAnonymous]
+        [OnlyAjaxActionFilter]
         public async Task<IActionResult> IsEmailInUseForLogin(string email)
         {
             var result = await _userManager.FindByEmailAsync(email);
             return Json(result != null);
         }
+        [AllowAnonymous]
+        [OnlyAjaxActionFilter]
         public IActionResult CheckIfPhoneNumberExists(string phone)
         {
             var result = _userManager.Users.Any(u => u.PhoneNumber == phone);
