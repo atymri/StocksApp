@@ -23,7 +23,10 @@
 
                     <div class="flex-1 pr" id="search-box-div">
 
-                        <input type="search" class="search-text" placeholder="Search Stocks" name="SearchText" />
+                        <form type="post" asp-controller="Stocks" asp-action="Explore">
+                            <input type="search" class="search-text" placeholder="Search Stocks" name="stock" />
+                            <input type="submit" value="search in explore" class="button button-blue-back"/>
+                        </form>
                         <i class="fa-solid fa-gear"></i>
 
                         @if(!User.Identity.IsAuthenticated){

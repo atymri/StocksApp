@@ -19,6 +19,8 @@ else
     app.UseExceptionHandler("/error");
 }
 
+app.UseHsts(); // Https Strict Transport Security
+app.UseHttpsRedirection();
 app.UseSerilogRequestLogging();
 app.UseStaticFiles();
 app.UseRouting();

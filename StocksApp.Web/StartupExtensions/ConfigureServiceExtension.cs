@@ -12,6 +12,7 @@ using StocksApp.Core.Domain.IdentityEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace StocksApp.Web.StartupExtensions
 {
@@ -19,7 +20,11 @@ namespace StocksApp.Web.StartupExtensions
     {
         public static void ConfigigureServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
+
             builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TradingOptions"));
             builder.Services.AddScoped<IFinnhubService, FinnhubServic>();
             builder.Services.AddScoped<IStocksService, StocksService>();
