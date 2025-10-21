@@ -11,12 +11,20 @@ namespace StocksApp.Repositories
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
         private readonly ILogger<FinnHubRepository> _logger;
+
         public FinnHubRepository(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<FinnHubRepository> logger)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
             _logger = logger;
         }
+
+        /// <summary>
+        /// Retrieves the company profile for a given stock symbol.
+        /// </summary>
+        /// <param name="stockSymbol">The stock symbol to retrieve the company profile for.</param>
+        /// <returns>A dictionary containing the company profile data, or null if no data is available.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when there is no response from the server or an error is returned.</exception>
         public async Task<Dictionary<string, object>?> GetCompanyProfile(string stockSymbol)
         {
             HttpClient client = _httpClientFactory.CreateClient();
@@ -39,6 +47,12 @@ namespace StocksApp.Repositories
             return responseDict;
         }
 
+        /// <summary>
+        /// Retrieves the stock price quote for a given stock symbol.
+        /// </summary>
+        /// <param name="stockSymbol">The stock symbol to retrieve the price quote for.</param>
+        /// <returns>A dictionary containing the stock price quote data, or null if no data is available.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when there is no response from the server or an error is returned.</exception>
         public async Task<Dictionary<string, object>?> GetStockPriceQuote(string stockSymbol)
         {
             HttpClient client = _httpClientFactory.CreateClient();
@@ -61,6 +75,11 @@ namespace StocksApp.Repositories
             return responseDict;
         }
 
+        /// <summary>
+        /// Retrieves a list of stocks available in the US exchange.
+        /// </summary>
+        /// <returns>A list of dictionaries containing stock data, or null if no data is available.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when there is no response from the server.</exception>
         public async Task<List<Dictionary<string, string>>?> GetStocks()
         {
             var client = _httpClientFactory.CreateClient();
@@ -78,13 +97,19 @@ namespace StocksApp.Repositories
             if (responseDict == null)
                 throw new InvalidOperationException("No response from server");
 
-            return  responseDict;
+            return responseDict;
         }
 
+        /// <summary>
+        /// Searches for stocks matching the given stock symbol.
+        /// </summary>
+        /// <param name="stockSymbol">The stock symbol to search for.</param>
+        /// <returns>A dictionary containing the search results, or null if no data is available.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when there is no response from the server or an error is returned.</exception>
         public async Task<Dictionary<string, object>?> SearchStocks(string stockSymbol)
         {
             var client = _httpClientFactory.CreateClient();
-            var request= new HttpRequestMessage()
+            var request = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"https://finnhub.io/api/v1/search?q={stockSymbol}&token={_configuration["FinnhubToken"]}")
@@ -102,7 +127,6 @@ namespace StocksApp.Repositories
                 throw new InvalidOperationException(Convert.ToString(responseDict["error"]));
 
             return responseDict;
-
         }
     }
 }

@@ -7,12 +7,22 @@ using System.Security.Cryptography.Xml;
 
 namespace StocksApp.Web.Controllers
 {
+    /// <summary>  
+    /// Controller responsible for handling stock-related operations.  
+    /// </summary>  
     [Route("[controller]")]
     public class StocksController : Controller
     {
         private readonly IFinnhubService _finnhubService;
         private readonly TradingOptions _tradingOptions;
         private readonly ILogger<StocksController> _logger;
+
+        /// <summary>  
+        /// Initializes a new instance of the <see cref="StocksController"/> class.  
+        /// </summary>  
+        /// <param name="finnhubService">Service for interacting with the Finnhub API.</param>  
+        /// <param name="tradingOptions">Configuration options for trading.</param>  
+        /// <param name="logger">Logger instance for logging operations.</param>  
         public StocksController(IFinnhubService finnhubService, IOptions<TradingOptions> tradingOptions, ILogger<StocksController> logger)
         {
             _logger = logger;
@@ -20,18 +30,24 @@ namespace StocksApp.Web.Controllers
             _tradingOptions = tradingOptions.Value;
         }
 
+        /// <summary>  
+        /// Displays a list of stocks, optionally filtered by a specific stock symbol or popular stocks.  
+        /// </summary>  
+        /// <param name="stock">The stock symbol to explore (optional).</param>  
+        /// <param name="showAll">Indicates whether to show all stocks or only the top 25 popular stocks.</param>  
+        /// <returns>A view displaying the list of stocks.</returns>  
         [Route("[action]/{stock?}")]
         [Route("~/[action]/{stock?}")]
         public async Task<IActionResult> Explore(string? stock, bool showAll = false)
         {
-            //get company profile from API server
+            // Get company profile from API server  
             List<Dictionary<string, string>>? stocksDictionary = await _finnhubService.GetStocks();
 
             List<Stock> stocks = new List<Stock>();
 
             if (stocksDictionary is not null)
             {
-                //filter stocks
+                // Filter stocks  
                 if (!showAll && _tradingOptions.Top25PopularStocks != null)
                 {
                     string[]? Top25PopularStocksList = _tradingOptions.Top25PopularStocks.Split(",");

@@ -11,14 +11,25 @@ using System.Globalization;
 
 namespace StocksApp.Web.Controllers
 {
+    /// <summary>  
+    /// Controller responsible for handling stock trading operations such as buying, selling, and viewing orders.  
+    /// </summary>  
     [Route("[controller]")]
     public class TradeController : Controller
     {
         private readonly TradingOptions _tradingOptions;
         private readonly IFinnhubService _finnhubService;
-        private readonly IStocksService _stockService; 
+        private readonly IStocksService _stockService;
         private readonly IConfiguration _configuration;
-        public TradeController(IOptions<TradingOptions> tradingOptions, IFinnhubService finnhubService, IStocksService stockService,IConfiguration configuration)
+
+        /// <summary>  
+        /// Initializes a new instance of the <see cref="TradeController"/> class.  
+        /// </summary>  
+        /// <param name="tradingOptions">Configuration options for trading.</param>  
+        /// <param name="finnhubService">Service for interacting with Finnhub API.</param>  
+        /// <param name="stockService">Service for managing stock orders.</param>  
+        /// <param name="configuration">Application configuration settings.</param>  
+        public TradeController(IOptions<TradingOptions> tradingOptions, IFinnhubService finnhubService, IStocksService stockService, IConfiguration configuration)
         {
             _tradingOptions = tradingOptions.Value;
             _finnhubService = finnhubService;
@@ -26,6 +37,11 @@ namespace StocksApp.Web.Controllers
             _configuration = configuration;
         }
 
+        /// <summary>  
+        /// Displays the main trading page with stock details for the specified symbol.  
+        /// </summary>  
+        /// <param name="symbol">The stock symbol to display. If null, the default stock symbol is used.</param>  
+        /// <returns>A view displaying stock details.</returns>  
         [Route("/")]
         [Route("[action]")]
         [Route("[action]/{symbol?}")]
@@ -54,7 +70,11 @@ namespace StocksApp.Web.Controllers
             return View(stockTrade);
         }
 
-
+        /// <summary>  
+        /// Creates a sell order for the specified stock.  
+        /// </summary>  
+        /// <param name="request">The sell order request containing stock details.</param>  
+        /// <returns>A redirect to the orders page.</returns>  
         [HttpPost]
         [Route("[action]")]
         [CreateOrderActionFactorory]
@@ -64,6 +84,11 @@ namespace StocksApp.Web.Controllers
             return RedirectToAction(nameof(Orders));
         }
 
+        /// <summary>  
+        /// Creates a buy order for the specified stock.  
+        /// </summary>  
+        /// <param name="request">The buy order request containing stock details.</param>  
+        /// <returns>A redirect to the orders page.</returns>  
         [HttpPost]
         [Route("[action]")]
         [CreateOrderActionFactorory]
@@ -73,7 +98,10 @@ namespace StocksApp.Web.Controllers
             return RedirectToAction(nameof(Orders));
         }
 
-
+        /// <summary>  
+        /// Displays a list of all buy and sell orders.  
+        /// </summary>  
+        /// <returns>A view displaying the list of orders.</returns>  
         [Route("[action]")]
         public async Task<IActionResult> Orders()
         {
@@ -91,6 +119,10 @@ namespace StocksApp.Web.Controllers
             return View(orders);
         }
 
+        /// <summary>  
+        /// Generates a PDF document containing a list of all orders.  
+        /// </summary>  
+        /// <returns>A PDF document displaying the list of orders.</returns>  
         [Route("[action]")]
         public async Task<IActionResult> OrdersPDF()
         {
@@ -107,8 +139,6 @@ namespace StocksApp.Web.Controllers
             {
                 PageMargins = new Rotativa.AspNetCore.Options.Margins() { Top = 20, Bottom = 20, Left = 20, Right = 20 }
             };
-
-
         }
     }
 }

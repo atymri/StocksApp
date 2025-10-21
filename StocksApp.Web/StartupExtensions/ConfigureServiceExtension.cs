@@ -39,7 +39,7 @@ namespace StocksApp.Web.StartupExtensions
 
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
-                options.Password.RequiredLength = 1;
+                options.Password.RequiredLength = 11;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredUniqueChars = 5;
@@ -57,10 +57,7 @@ namespace StocksApp.Web.StartupExtensions
                 options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 options.AddPolicy("NotAuthenticated", policy =>
                 {
-                    policy.RequireAssertion(context =>
-                    {
-                        return !context.User.Identity.IsAuthenticated;
-                    });
+                    policy.RequireAssertion(context => !context.User.Identity!.IsAuthenticated);
                 });
             });
 
