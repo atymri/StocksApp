@@ -10,7 +10,7 @@ A web application for tracking stock prices and managing a portfolio.
 
 ## Architecture
 
-The application follows a layered architecture, which separates concerns and improves maintainability.
+The application follows a clean architecture.
 
 - **StocksApp.Core**: Contains the core business logic, domain models, and service interfaces.
 - **StocksApp.Infrastructure**: Implements the data access layer using Entity Framework Core and repositories.
